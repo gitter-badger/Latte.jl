@@ -243,11 +243,11 @@ function pattern_match_gemm4(node, cbdata, index, top_level, read)
     if contains_index(A_idx, [j2_loopvar, j1_loopvar, k_loopvar])
         transA = 'N'
         lda = :(size($(A.args[1]), 1) * size($(A.args[1]), 2))
-        A_offset = map(replace_index_with_expr, A_idx, [j2_loopvar, j1_loopvar, k_loopvar], [j2_start, j2_start, k_start])
+        A_offset = map(replace_index_with_expr, A_idx, [j2_loopvar, j1_loopvar, k_loopvar], [j2_start, j1_start, k_start])
     elseif contains_index(A_idx, [k_loopvar, j2_loopvar, j1_loopvar])
         transA = 'T'
         lda = :(size($(A.args[1]), 1))
-        A_offset = map(replace_index_with_expr, A_idx, [k_loopvar, j2_loopvar, j1_loopvar], [k_start, j2_start, j2_start])
+        A_offset = map(replace_index_with_expr, A_idx, [k_loopvar, j2_loopvar, j1_loopvar], [k_start, j2_start, j1_start])
     else
         return ASTWALK_RECURSE
     end
@@ -321,11 +321,11 @@ function pattern_match_gemm5(node, cbdata, index, top_level, read)
     if contains_index(A_idx, [j_loopvar, k2_loopvar, k1_loopvar])
         transA = 'N'
         lda = :(size($(A.args[1]), 1))
-        A_offset = map(replace_index_with_expr, A_idx, [j_loopvar, k2_loopvar, k1_loopvar], [j_start, k2_start, k2_start])
+        A_offset = map(replace_index_with_expr, A_idx, [j_loopvar, k2_loopvar, k1_loopvar], [j_start, k2_start, k1_start])
     elseif contains_index(A_idx, [k2_loopvar, k1_loopvar, j_loopvar])
         transA = 'T'
         lda = :(size($(A.args[1]), 1) * size($(A.args[1]), 2))
-        A_offset = map(replace_index_with_expr, A_idx, [k2_loopvar, k1_loopvar, j_loopvar], [k2_start, k2_start, j_start])
+        A_offset = map(replace_index_with_expr, A_idx, [k2_loopvar, k1_loopvar, j_loopvar], [k2_start, k1_start, j_start])
     else
         return ASTWALK_RECURSE
     end

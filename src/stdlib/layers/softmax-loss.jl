@@ -69,6 +69,14 @@ function SoftmaxLossLayer(name::Symbol, net::Net, input_ensemble::AbstractEnsemb
     softmax
 end
 
+function exp{T}(val::T)
+    ccall((:exp, "libm"), T, (T,), val)
+end
+
+function log{T}(val::T)
+    ccall((:log, "libm"), T, (T,), val)
+end
+
 @output SoftmaxLossEnsemble function forward(loss::Array, prob::Array,
                                              input::Array, label::Array)
     loss[1] = 0.0
